@@ -1,10 +1,49 @@
-﻿
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<div>
-    <h1>
-        Login Page
-    </h1>
+<div class="login-page">
+    <div class="row logo-row justify-content-center pt-5 pb-5">
+        <div class="col-4 login-header">
+            <img src="~/Assets/images/login/arrow-button.png" alt="login logo">
+            <h1>
+                Đăng nhập
+            </h1>
+        </div>
+    </div>
+    <div class="row input-row pb-5">
+        <div class="col">
+            <form class="text-center">
+                <input class="passcode-input" type="text" name="passcode" placeholder="Passcode">
+            </form>
+        </div>
+    </div>
+    <div class="row service-row pb-5">
+        <div class="col-4 service-logo">
+            <img src="~/Assets/images/login/bucket.png" alt="bucket logo" class="white-filter">
+            <h4>Vệ sinh</h4>
+        </div>
+        <div class="col-4 service-logo">
+            <img src="~/Assets/images/login/policeman.png" alt="policeman logo" class="white-filter">
+            <h4>Bảo vệ</h4>
+        </div>
+        <div class="col-4 service-logo">
+            <img src="~/Assets/images/login/social-care.png" alt="social care logo" class="white-filter">
+            <h4>Chăm sóc học viên</h4>
+        </div>
+    </div>
+
+    <div class="row rating-button-row pb-5">
+        <div class="col text-center">
+            <button type="button" class="btn btn-danger btn-lg" data-toggle="button" aria-pressed="false" autocomplete="off" onClick="startRating()">
+                Bắt đầu đánh giá
+            </button>
+        </div>
+    </div>
 </div>
+
+<script>
+    function startRating() {
+        console.log("starting rating this service...");
+    }
+</script>

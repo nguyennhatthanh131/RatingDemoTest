@@ -40,3 +40,54 @@
     grid-column: 4 / -1;
     grid-row: 1;
 }
+
+/* LOGIN PAGE */
+.login-page {
+    background: #a93737;
+    color: #fff;
+    border: #a93737 solid 1px;
+    border-radius: 9px;
+}
+
+.login-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.passcode-input {
+    width: 85%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
+.service-row {
+    padding: 0 8%;
+}
+
+.service-logo {
+    text-align: center;
+    color: white;
+    background-color: transparent;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 2%;
+}
+    .service-logo:hover {
+        background-color: white;
+        cursor: pointer;
+        color: #a93737;
+    }
+
+        .service-logo:hover > img.white-filter {
+            filter: unset;
+        }
+
+.white-filter {
+    filter: invert(100%) sepia(0%) saturate(2%) hue-rotate(293deg) brightness(103%) contrast(101%);
+}
