@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Rating Demo Page";
+}
+<environment include="Development">
+    <link rel="stylesheet" href="~/css/rating-demo-custom.css" />
+</environment>
+
+
+<div class="start-page">
+    <div class="row logo-row justify-content-center pb-5">
+        <div class="col-4 alt-logo">
+            <img src="~/Assets/images/logo.png" alt="alt logo">
+        </div>
+    </div>
+    <div class="row survey-row pb-5">
+        <div class="col survey-flex">
+            <h1>ĐÁNH GIÁ CHẤT LƯỢNG DỊCH VỤ</h1>
+            <h3>Khảo sát dịch vụ tại ALT IELTS gia sư</h3>
+            <button type="button" class="btn btn-danger" data-toggle="button" aria-pressed="false" autocomplete="off" onClick="startSurvey()">
+                Bắt đầu
+            </button>
+        </div>
+    </div>
+
+    <div class="row bottom-row">
+        <div class="col image-stack">
+            <div class="image-stack__item image-stack__item--bottom">
+                <img src="~/Assets/images/group-people-wave.svg" alt="background wave" style="max-width: 100%">
+            </div>
+            <div class="image-stack__item image-stack__item--top">
+                <img src="~/Assets/images/group-people.svg" alt="background people" style="max-width: 100%">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function startSurvey() {
+        console.log("starting...");
+    }
+</script>  
