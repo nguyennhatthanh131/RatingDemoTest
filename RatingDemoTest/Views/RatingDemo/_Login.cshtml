@@ -14,20 +14,21 @@
     <div class="row input-row pb-5">
         <div class="col">
             <form class="text-center">
-                <input class="passcode-input" type="text" name="passcode" placeholder="Passcode">
+                <input class="passcode-input" id="passcode-to-login" type="text" name="passcode" placeholder="Passcode">
+                <p id="passcode-validation" style="visibility: hidden">Vui lòng kiểm tra mật khẩu</p>
             </form>
         </div>
     </div>
     <div class="row service-row pb-5">
-        <div class="col-4 service-logo">
+        <div class="col-4 service-logo" onClick="selectService(1)">
             <img src="~/Assets/images/login/bucket.png" alt="bucket logo" class="white-filter">
             <h4>Vệ sinh</h4>
         </div>
-        <div class="col-4 service-logo">
+        <div class="col-4 service-logo" onClick="selectService(2)">
             <img src="~/Assets/images/login/policeman.png" alt="policeman logo" class="white-filter">
             <h4>Bảo vệ</h4>
         </div>
-        <div class="col-4 service-logo">
+        <div class="col-4 service-logo" onClick="selectService(3)">
             <img src="~/Assets/images/login/social-care.png" alt="social care logo" class="white-filter">
             <h4>Chăm sóc học viên</h4>
         </div>
@@ -43,7 +44,42 @@
 </div>
 
 <script>
+    var passCode = "";
+    var serviceId = 1;
+    var isAbleToLogin = false;
+    function selectService(serviceId) {
+        this.passCode = $("#passcode-to-login").val();
+
+        this.serviceId = serviceId;
+
+        console.log(this.serviceId);
+        console.log(this.passCode);
+    }
+
     function startRating() {
         console.log("starting rating this service...");
+
+        $.post(
+            '@(Url.Action("Rating","RatingDemo"))',
+            {
+                passCode: this.passCode,
+                serviceId: this.serviceId
+            }, 
+            function (result) {
+                debugger;
+                if (String(result).indexOf("false") > -1) {
+                    document.getElementById("passcode-validation").style.visibility = "visible";
+                    console.log(result);
+                }
+                else {
+                    document.getElementById("passcode-validation").style.visibility = "hidden";
+                    this.isAbleToLogin = true;
+                    $("#demo-body").html(result);
+                }
+            }
+        )
+        .fail(function () {
+            console.log("error");
+        });
     }
 </script>
