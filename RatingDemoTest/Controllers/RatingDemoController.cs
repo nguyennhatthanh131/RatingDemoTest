@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RatingDemoTest.Domain;
+using RatingDemoTest.ViewModel;
 
 namespace RatingDemoTest.Controllers
 {
@@ -18,9 +20,10 @@ namespace RatingDemoTest.Controllers
             return PartialView("_Login");
         }
 
-        public IActionResult Rating(string passCode, int serviceId = 1)
+        public async Task<IActionResult> Rating(string passCode, int serviceId = 1)
         {
-            var isAbleToLogin = AuthenLogin(passCode);
+            var isAbleToLogin = await AuthenLogin(passCode, serviceId);
+
             if (isAbleToLogin)
             {
                 var pageToLoad = "_SanitationRating";
@@ -43,13 +46,54 @@ namespace RatingDemoTest.Controllers
             }
 
             return Json(isAbleToLogin);
-
         }
 
-        private bool AuthenLogin(string passCode)
+        private async Task<bool> AuthenLogin(string passCode, int serviceId = 1)
         {
-            if (passCode == null || passCode == string.Empty)                  return false;
-            return passCode.Equals("123456789");
+            var isAuthenLogin = false;
+            if (passCode == null || passCode == string.Empty)
+            {
+                return isAuthenLogin;
+            }
+
+            if ((serviceId == 1 && passCode.Equals("12345")) ||
+                (serviceId == 2 && passCode.Equals("23456")) ||
+                (serviceId == 3 && passCode.Equals("34567")))
+            {
+                using (var context = new RatingDemoContext())
+                {
+                    var servicePassCode = serviceId == 1
+                            ? "12345"
+                            : serviceId == 2
+                                ? "23456"
+                                : "34567";
+
+                    var loginService = Task.FromResult(context.LoginServices
+                        .Where(x => x.LoginServiceId == serviceId &&
+                                    x.LoginServicePassCode.Contains(servicePassCode))
+                        .FirstOrDefault());
+
+                    if (loginService.Result == null)
+                    {
+                        context.LoginServices.Add(new LoginServices
+                        {
+                            LoginServiceId = serviceId,
+                            LoginServicePassCode = servicePassCode,
+                            IsStillLogin = true
+                        });
+                        await context.SaveChangesAsync();                        
+                    }
+                    else
+                    {
+                        loginService.Result.IsStillLogin = true;
+                        await context.SaveChangesAsync();
+                    }
+
+                    isAuthenLogin = true;
+                }
+            }
+
+            return isAuthenLogin;
         }
     }
 }
