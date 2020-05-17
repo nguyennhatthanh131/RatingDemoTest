@@ -12,7 +12,7 @@ namespace RatingDemoTest
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-SGDKETR;Database=RatingDemoTest;Integrated Security=False;User ID=sa;Password=Iwannafucku131;");
+            optionsBuilder.UseSqlServer("Server=serverName;Database=RatingDemoTest;Integrated Security=False;User ID=username;Password=password;");
         }
     }
 }
