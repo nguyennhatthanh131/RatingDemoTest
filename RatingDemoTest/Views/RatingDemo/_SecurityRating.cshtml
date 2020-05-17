@@ -17,4 +17,78 @@
             </button>
         </div>
     </div>
+
+    <div class="row justify-content-center pb-5">
+        <div class="col">
+            <input type="radio" id="1-star" name="rating-star" value="1">
+            <label for="1-star">1</label><br>
+            <input type="radio" id="2-star" name="rating-star" value="2">
+            <label for="2-star">2</label><br>
+            <input type="radio" id="3-star" name="rating-star" value="3">
+            <label for="3-star">3</label><br>
+            <input type="radio" id="4-star" name="rating-star" value="4">
+            <label for="4-star">4</label><br>
+            <input type="radio" id="5-star" name="rating-star" value="5">
+            <label for="5-star">5</label><br>
+        </div>
+        <div class="col">
+            <form class="text-center">
+                <input class="comment-input" id="sercurity-comment" type="text" name="sercurity-comment" placeholder="comment">
+            </form>
+        </div>
+    </div>
+
+    <div class="row justify-content-center pb-5">
+        <div class="col">
+            <button type="button" class="btn btn-danger btn-lg" data-toggle="button" aria-pressed="false" autocomplete="off" onClick="ratingSubmit()">
+                Gửi
+            </button>
+        </div>
+    </div>
 </div>
+
+<script>
+
+    var sercurityRatingStarPoint = 0;
+    var sercurityComment = "";
+    function getRatingStarValueAndComment() {
+        var radios = document.getElementsByName('rating-star');
+
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                this.sercurityRatingStarPoint = radios[i].value
+                break;
+            }
+        }
+
+        this.sercurityComment = $("#sercurity-comment").val();
+    }
+
+    function ratingSubmit() {
+        this.getRatingStarValueAndComment();
+        
+        var currentServiceId = parseInt($("#dataAttrServiceId").attr("data-service-id"));
+
+        $.post(
+            '@(Url.Action("RatingSubmit","RatingDemo"))',
+            {
+                ratingPoint: this.sercurityRatingStarPoint,
+                ratingComment: this.sercurityComment,
+                serviceId: currentServiceId
+            },
+            function (result) {
+                debugger;
+                if (String(result).indexOf("true") > -1) {
+                    alert("Success");
+                }
+                else {
+                    alert("Cannot submit now");
+                }
+            }
+        )
+        .fail(function () {
+            console.log("error");
+        });
+    }
+
+</script>

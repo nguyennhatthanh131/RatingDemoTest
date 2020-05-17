@@ -46,8 +46,8 @@ namespace RatingDemoTest.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("RatedServiceComment")
-                        .HasColumnType("int");
+                    b.Property<string>("RatedServiceComment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RatedServiceId")
                         .HasColumnType("int");

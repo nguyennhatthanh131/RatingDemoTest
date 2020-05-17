@@ -136,5 +136,22 @@ namespace RatingDemoTest.Controllers
 
             return await Task.FromResult(Json(isLogout));
         }
+
+        public async Task<bool> RatingSubmit(int ratingPoint, string ratingComment, int serviceId = 1)
+        {
+            using (var context = new RatingDemoContext())
+            {
+                var ratingService = new ServicesRating
+                {
+                    RatedServiceId = serviceId,
+                    RatedServicePoint = ratingPoint,
+                    RatedServiceComment = ratingComment
+                };
+
+                context.ServicesRating.Add(ratingService);
+
+                return await context.SaveChangesAsync() > 0;
+            }
+        }
     }
 }

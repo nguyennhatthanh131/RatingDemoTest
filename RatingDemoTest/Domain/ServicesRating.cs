@@ -12,6 +12,6 @@ namespace RatingDemoTest.Domain
         public int RatingId { get; set; }
         public int RatedServiceId { get; set; }
         public int RatedServicePoint { get; set; }
-        public int RatedServiceComment { get; set; }
+        public string RatedServiceComment { get; set; }
     }
 }

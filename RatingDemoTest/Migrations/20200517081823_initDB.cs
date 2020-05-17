@@ -29,7 +29,7 @@ namespace RatingDemoTest.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RatedServiceId = table.Column<int>(nullable: false),
                     RatedServicePoint = table.Column<int>(nullable: false),
-                    RatedServiceComment = table.Column<int>(nullable: false)
+                    RatedServiceComment = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

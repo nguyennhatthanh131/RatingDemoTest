@@ -9,7 +9,7 @@ using RatingDemoTest;
 namespace RatingDemoTest.Migrations
 {
     [DbContext(typeof(RatingDemoContext))]
-    [Migration("20200517053150_initDB")]
+    [Migration("20200517081823_initDB")]
     partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,8 +48,8 @@ namespace RatingDemoTest.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("RatedServiceComment")
-                        .HasColumnType("int");
+                    b.Property<string>("RatedServiceComment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RatedServiceId")
                         .HasColumnType("int");
