@@ -31,17 +31,76 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<!-- Changing Services Modal -->
+<div class="modal" id="changingServicesModal" tabindex="-1" role="dialog" aria-labelledby="changingServicesModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="changingServicesModalLabel">Đổi Dịch Vụ</h4>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row input-row pb-5">
+                    <div class="col">
+                        <form class="text-center">
+                            <input class="passcode-input" id="passcode-to-change-service" type="text" name="passcode" placeholder="Passcode">
+                        </form>
+                    </div>
+                </div>
+                <div class="row service-row pb-5">
+                    <div class="col-4 service-logo" onClick="selectService(1)">
+                        <img src="~/Assets/images/login/bucket.png" alt="bucket logo" class="white-filter">
+                        <h4>Vệ sinh</h4>
+                    </div>
+                    <div class="col-4 service-logo" onClick="selectService(2)">
+                        <img src="~/Assets/images/login/policeman.png" alt="policeman logo" class="white-filter">
+                        <h4>Bảo vệ</h4>
+                    </div>
+                    <div class="col-4 service-logo" onClick="selectService(3)">
+                        <img src="~/Assets/images/login/social-care.png" alt="social care logo" class="white-filter">
+                        <h4>Chăm sóc học viên</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onClick="changeService()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="logoutModalLabel">Đăng xuất</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <form class="text-center">
+                    <input class="passcode-input" id="passcode-to-logout" type="text" name="passcode" placeholder="Passcode">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onClick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function startSurvey() {
         console.log("starting...");
         $.ajax(
         {
-            url: '@(Url.Action("Login","RatingDemo"))',  
-            contentType: 'application/html; charset=utf-8',  
-            type: 'GET',  
+            url: '@(Url.Action("Login","RatingDemo"))',
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
 
             success: function (result) {
                 $("#demo-body").html(result);
@@ -52,4 +111,93 @@
             }
         });
     }
-</script>  
+
+    // Login functions
+    var passCode = "";
+    var serviceId = 1;
+    var isAbleToLogin = false;
+    function selectService(serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    function startRating() {
+        console.log("starting rating this service...");
+        var passCodeToLogin = $("#passcode-to-login").val();
+        $.post(
+            '@(Url.Action("Rating","RatingDemo"))',
+            {
+                passCode: passCodeToLogin,
+                serviceId: this.serviceId
+            },
+            function (result) {
+                debugger;
+                if (String(result).indexOf("Is Not able to login") > -1) {
+                    document.getElementById("passcode-validation").style.visibility = "visible";
+                    console.log(result);
+                }
+                else {
+                    document.getElementById("passcode-validation").style.visibility = "hidden";
+                    this.isAbleToLogin = true;
+                    $("#demo-body").html(result);
+                }
+            }
+        )
+        .fail(function () {
+            console.log("error");
+        });
+    }
+
+    // Sanitation Rating Page functions
+    var passCodeToChangeService = "";
+
+    function changeService() {
+        var passCodeToChangeService = $("#passcode-to-change-service").val();
+        $.post(
+            '@(Url.Action("Rating","RatingDemo"))',
+            {
+                passCode: passCodeToChangeService,
+                serviceId: this.serviceId
+            },
+            function (result) {
+                debugger;
+                if (String(result).indexOf("Is Not able to login") > -1) {
+                    alert("Wrong passcode to change service");
+                }
+                else {
+                    this.isAbleToLogin = true;
+                    $('#changingServicesModal').modal('hide');
+                    $("#demo-body").html(result);
+                }
+            }
+        )
+        .fail(function () {
+            console.log("error");
+        });
+    }
+
+    function logout() {
+        console.log("logout");
+        var passCode = $("#passcode-to-logout").val();
+        var currentServiceId = parseInt($("#dataAttrServiceId").attr("data-service-id"));
+
+        $.post(
+            '@(Url.Action("LogoutFromService","RatingDemo"))',
+            {
+                passCode: passCode,
+                serviceId: currentServiceId
+            },
+            function (result) {
+                debugger;
+                if (String(result).indexOf("false") > -1) {
+                    alert("không thể thoát lúc này");
+                }
+                else {
+                    window.location.href = '@(Url.Action("Index","RatingDemo"))';
+                }
+            }
+        )
+        .fail(function () {
+            console.log("error");
+        });
+    }
+</script>

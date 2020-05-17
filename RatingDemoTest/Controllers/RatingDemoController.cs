@@ -44,8 +44,8 @@ namespace RatingDemoTest.Controllers
 
                 return PartialView(pageToLoad);
             }
-
-            return Json(isAbleToLogin);
+            
+            return Json("Is Not able to login");
         }
 
         private async Task<bool> AuthenLogin(string passCode, int serviceId = 1)
@@ -94,6 +94,47 @@ namespace RatingDemoTest.Controllers
             }
 
             return isAuthenLogin;
+        }
+
+        public async Task<IActionResult> LogoutFromService(string passCode, int serviceId = 1)
+        {
+            var isLogout = false;
+            if (passCode == null || passCode == string.Empty)
+            {
+                return await Task.FromResult(Json(isLogout));
+            }
+
+            if ((serviceId == 1 && passCode.Equals("12345")) ||
+                (serviceId == 2 && passCode.Equals("23456")) ||
+                (serviceId == 3 && passCode.Equals("34567")))
+            {
+                using (var context = new RatingDemoContext())
+                {
+                    var servicePassCode = serviceId == 1
+                            ? "12345"
+                            : serviceId == 2
+                                ? "23456"
+                                : "34567";
+
+                    var loginService = Task.FromResult(context.LoginServices
+                        .Where(x => x.LoginServiceId == serviceId &&
+                                    x.LoginServicePassCode.Contains(servicePassCode))
+                        .FirstOrDefault());
+
+                    if (loginService.Result == null)
+                    {
+                        isLogout = false;
+                    }
+                    else
+                    {
+                        loginService.Result.IsStillLogin = false;
+                        await context.SaveChangesAsync();
+                        isLogout = true;
+                    }
+                }
+            }
+
+            return await Task.FromResult(Json(isLogout));
         }
     }
 }
