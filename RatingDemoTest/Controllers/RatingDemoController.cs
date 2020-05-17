@@ -48,7 +48,7 @@ namespace RatingDemoTest.Controllers
             return Json("Is Not able to login");
         }
 
-        private async Task<bool> AuthenLogin(string passCode, int serviceId = 1)
+        public async Task<bool> AuthenLogin(string passCode, int serviceId = 1)
         {
             var isAuthenLogin = false;
             if (passCode == null || passCode == string.Empty)
